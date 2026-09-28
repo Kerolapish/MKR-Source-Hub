@@ -17,8 +17,7 @@ $data       = $controller->getDashboardData();
 $pageTitle        = 'Dashboard';
 $totalHardware    = $data['totalHardware'];
 $totalContractors = $data['totalContractors'];
-$recentProjects   = $data['recentProjects'];
-$topContractors    = $data['topContractors'];
+$recentHardware   = $data['recentHardware'];
 $categoryStats    = $data['categoryStats'];
 $dbError          = $data['dbError'];
 
@@ -31,14 +30,6 @@ function formatMYR(float $amount): string
 {
     return 'RM ' . number_format($amount, 0, '.', ',');
 }
-
-$statusConfig = [
-    'Active'    => ['bg' => 'bg-sky-500/15 text-sky-400 border-sky-500/30',     'dot' => 'bg-sky-400'],
-    'Planning'  => ['bg' => 'bg-blue-500/15 text-blue-400 border-blue-500/30',   'dot' => 'bg-blue-400'],
-    'Completed' => ['bg' => 'bg-slate-500/15 text-slate-400 border-slate-500/30','dot' => 'bg-slate-400'],
-    'On Hold'   => ['bg' => 'bg-amber-500/15 text-amber-400 border-amber-500/30','dot' => 'bg-amber-400'],
-    'Cancelled' => ['bg' => 'bg-rose-500/15 text-rose-400 border-rose-500/30',   'dot' => 'bg-rose-400'],
-];
 
 require_once __DIR__ . '/includes/header.php';
 ?>
@@ -151,56 +142,62 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             </section>
 
-            <!-- ── BOTTOM GRID: Recent Projects + Top Contractors + Category Stats ── -->
+            <!-- ── BOTTOM GRID: Recent Hardware + Category Stats ── -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 <section class="lg:col-span-2 bg-[#0f172a] border border-blue-900/60 rounded-2xl overflow-hidden shadow-lg"
-                         aria-label="Recent projects">
+                         aria-label="Recent hardware">
                     <div class="flex items-center justify-between px-6 py-4 border-b border-blue-900/60 bg-blue-950/40">
                         <div class="flex items-center gap-2">
-                            <i data-lucide="folder-kanban" class="w-4 h-4 text-sky-400"></i>
-                            <h2 class="text-sm font-bold text-white font-mono uppercase tracking-wider">Recent Projects</h2>
+                            <i data-lucide="package" class="w-4 h-4 text-sky-400"></i>
+                            <h2 class="text-sm font-bold text-white font-mono uppercase tracking-wider">Recent Hardware</h2>
                         </div>
                         <span class="text-xs text-blue-300/60 font-mono">Latest 5 records</span>
                     </div>
 
-                    <?php if (empty($recentProjects)): ?>
+                    <?php if (empty($recentHardware)): ?>
                     <div class="flex flex-col items-center justify-center py-12 text-gray-500">
-                        <i data-lucide="folder-open" class="w-10 h-10 mb-3 opacity-40"></i>
-                        <p class="text-sm font-mono">No projects found.</p>
+                        <i data-lucide="package-open" class="w-10 h-10 mb-3 opacity-40"></i>
+                        <p class="text-sm font-mono">No hardware items found.</p>
                     </div>
                     <?php else: ?>
+                    <?php
+                    $catBadge = [
+                        'Sensor'          => 'bg-sky-500/15 text-sky-400 border-sky-500/30',
+                        'Microcontroller' => 'bg-blue-500/15 text-blue-400 border-blue-500/30',
+                        'Fertigation'     => 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30',
+                        'Network'         => 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30',
+                        'Machinery'       => 'bg-amber-500/15 text-amber-400 border-amber-500/30',
+                    ];
+                    ?>
                     <div class="divide-y divide-blue-950">
-                        <?php foreach ($recentProjects as $project):
-                            $status = $project['status'] ?? 'Planning';
-                            $sc = $statusConfig[$status] ?? $statusConfig['Planning'];
+                        <?php foreach ($recentHardware as $item):
+                            $category = $item['category'] ?? '';
+                            $badge = $catBadge[$category] ?? 'bg-slate-500/15 text-slate-400 border-slate-500/30';
                         ?>
                         <div class="px-6 py-4 hover:bg-blue-950/40 transition-colors duration-100 group">
                             <div class="flex items-start justify-between gap-3">
                                 <div class="min-w-0 flex-1">
                                     <p class="text-sm font-semibold text-white truncate group-hover:text-sky-300
                                               transition-colors duration-150">
-                                        <?= e($project['project_title']) ?>
+                                        <?= e($item['item_name']) ?>
                                     </p>
                                     <p class="text-xs text-gray-400 mt-0.5 truncate">
-                                        <?= e($project['client_agency']) ?>
+                                        <?= e($item['supplier_name']) ?>
                                     </p>
                                     <div class="flex items-center gap-3 mt-2">
                                         <span class="text-xs text-gray-400 flex items-center gap-1 font-mono">
-                                            <i data-lucide="calendar" class="w-3 h-3 text-sky-400"></i>
-                                            <?= e(date('d M Y', strtotime($project['start_date']))) ?>
-                                            &rarr;
-                                            <?= e(date('d M Y', strtotime($project['end_date']))) ?>
+                                            <i data-lucide="clock" class="w-3 h-3 text-sky-400"></i>
+                                            <?= (int)$item['lead_time_days'] ?> day lead time
                                         </span>
                                         <span class="text-xs font-mono font-bold text-sky-400">
-                                            <?= e(formatMYR((float)$project['budget'])) ?>
+                                            <?= e(formatMYR((float)$item['unit_cost'])) ?>
                                         </span>
                                     </div>
                                 </div>
                                 <span class="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1
-                                             rounded-full text-xs font-semibold font-mono border <?= $sc['bg'] ?>">
-                                    <span class="w-1.5 h-1.5 rounded-full <?= $sc['dot'] ?>"></span>
-                                    <?= e($status) ?>
+                                             rounded-full text-xs font-semibold font-mono border <?= $badge ?>">
+                                    <?= e($category) ?>
                                 </span>
                             </div>
                         </div>
@@ -210,35 +207,6 @@ require_once __DIR__ . '/includes/header.php';
                 </section>
 
                 <div class="flex flex-col gap-6">
-
-                    <section class="bg-[#0f172a] border border-blue-900/60 rounded-2xl overflow-hidden shadow-lg"
-                             aria-label="Top rated contractors">
-                        <div class="flex items-center gap-2 px-5 py-4 border-b border-blue-900/60 bg-blue-950/40">
-                            <i data-lucide="star" class="w-4 h-4 text-amber-400"></i>
-                            <h2 class="text-sm font-bold text-white font-mono uppercase tracking-wider">Top Contractors</h2>
-                        </div>
-                        <div class="divide-y divide-blue-950">
-                            <?php foreach ($topContractors as $contractor): ?>
-                            <div class="flex items-center gap-3 px-5 py-3 hover:bg-blue-950/40 transition-colors duration-100">
-                                <div class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full
-                                            bg-gradient-to-br from-blue-600 to-indigo-700
-                                            text-white text-xs font-bold">
-                                    <?= e(strtoupper(substr($contractor['company_name'], 0, 2))) ?>
-                                </div>
-                                <div class="min-w-0 flex-1">
-                                    <p class="text-xs font-semibold text-white truncate"><?= e($contractor['company_name']) ?></p>
-                                    <p class="text-[10px] text-blue-300/70 font-mono"><?= e($contractor['project_count']) ?> project(s)</p>
-                                </div>
-                                <div class="flex-shrink-0 flex items-center gap-1 font-mono">
-                                    <i data-lucide="star" class="w-3 h-3 text-amber-400 fill-amber-400"></i>
-                                    <span class="text-xs font-bold text-amber-400">
-                                        <?= number_format((float)$contractor['performance_rating'], 1) ?>
-                                    </span>
-                                </div>
-                            </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </section>
 
                     <section class="bg-[#0f172a] border border-blue-900/60 rounded-2xl overflow-hidden shadow-lg"
                              aria-label="Hardware by category">

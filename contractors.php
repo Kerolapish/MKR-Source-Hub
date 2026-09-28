@@ -58,16 +58,12 @@ require_once __DIR__ . '/includes/header.php';
             <h1 class="text-xl font-extrabold text-white uppercase tracking-wider font-mono">
                 CONTRACTOR REGISTRY
             </h1>
-            <button id="toggle-form-btn" type="button" class="inline-flex items-center gap-1.5 text-xs text-sky-400 hover:text-sky-300 font-medium mt-1 transition-colors">
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5" id="form-chevron"></i>
-                <span id="form-toggle-text">show add form</span>
-            </button>
         </div>
 
         <button id="open-add-btn" type="button"
                 class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded shadow-lg shadow-blue-950/50 transition-all">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-            + NEW CONTRACTOR
+            <i data-lucide="user-plus" class="w-4 h-4"></i>
+            NEW CONTRACTOR
         </button>
     </div>
 
@@ -231,7 +227,6 @@ require_once __DIR__ . '/includes/header.php';
                                 <span class="flex items-center text-amber-400 text-xs font-bold">
                                     ★ <?= number_format($rating, 1) ?>
                                 </span>
-                                <span class="inline-block w-2 h-2 rounded-full bg-sky-400" title="Active"></span>
                             </div>
                         </td>
                         <td class="py-3.5 px-4 text-center font-mono font-bold text-white">
@@ -251,7 +246,7 @@ require_once __DIR__ . '/includes/header.php';
                                     <input type="hidden" name="action" value="delete_contractor">
                                     <input type="hidden" name="contractor_id" value="<?= (int)$con['id'] ?>">
                                     <button type="submit" class="px-2 py-1 bg-red-950/40 hover:bg-red-900/60 text-red-400 border border-red-800/50 rounded text-[11px] font-mono">
-                                        Del
+                                        Delete
                                     </button>
                                 </form>
                             </div>
@@ -269,12 +264,9 @@ require_once __DIR__ . '/includes/header.php';
 <!-- JavaScript for Add/Edit Form toggle -->
 <script>
     const formContainer   = document.getElementById('contractor-form-container');
-    const toggleBtn       = document.getElementById('toggle-form-btn');
     const openAddBtn      = document.getElementById('open-add-btn');
     const closeBtn        = document.getElementById('close-form-btn');
     const cancelBtn       = document.getElementById('cancel-btn');
-    const formChevron     = document.getElementById('form-chevron');
-    const formToggleText  = document.getElementById('form-toggle-text');
 
     const contractorForm  = document.getElementById('contractor-form');
     const formTitle       = document.getElementById('form-title');
@@ -291,15 +283,11 @@ require_once __DIR__ . '/includes/header.php';
 
     function showForm(isEdit = false) {
         formContainer.classList.remove('hidden');
-        formToggleText.textContent = 'hide add form';
-        if (formChevron) formChevron.setAttribute('data-lucide', 'chevron-up');
         lucide.createIcons();
     }
 
     function hideForm() {
         formContainer.classList.add('hidden');
-        formToggleText.textContent = 'show add form';
-        if (formChevron) formChevron.setAttribute('data-lucide', 'chevron-down');
         resetForm();
         lucide.createIcons();
     }
@@ -311,14 +299,6 @@ require_once __DIR__ . '/includes/header.php';
         contractorForm.reset();
         submitBtn.textContent = 'SAVE';
     }
-
-    toggleBtn.addEventListener('click', () => {
-        if (formContainer.classList.contains('hidden')) {
-            showForm();
-        } else {
-            hideForm();
-        }
-    });
 
     openAddBtn.addEventListener('click', () => {
         resetForm();

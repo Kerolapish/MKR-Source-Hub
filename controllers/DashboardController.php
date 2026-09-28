@@ -27,24 +27,14 @@ class DashboardController
                 ->query('SELECT COUNT(DISTINCT `id`) FROM `contractors`')
                 ->fetchColumn();
 
-            $recentProjects = $this->pdo
+            $recentHardware = $this->pdo
                 ->query(
-                    'SELECT `project_title`, `client_agency`, `status`, `budget`, `start_date`, `end_date`
-                     FROM `projects`
-                     ORDER BY `created_at` DESC
+                    'SELECT h.`item_name`, h.`category`, h.`unit_cost`, h.`lead_time_days`,
+                            h.`created_at`, s.`supplier_name`
+                     FROM `hardware_items` h
+                     LEFT JOIN `suppliers` s ON s.`id` = h.`supplier_id`
+                     ORDER BY h.`created_at` DESC
                      LIMIT 5'
-                )
-                ->fetchAll();
-
-            $topContractors = $this->pdo
-                ->query(
-                    'SELECT c.`company_name`, c.`contact_person`, c.`performance_rating`,
-                            COUNT(cp.`id`) AS project_count
-                     FROM `contractors` c
-                     LEFT JOIN `contractor_projects` cp ON cp.`contractor_id` = c.`id`
-                     GROUP BY c.`id`
-                     ORDER BY c.`performance_rating` DESC
-                     LIMIT 4'
                 )
                 ->fetchAll();
 
@@ -60,8 +50,7 @@ class DashboardController
             return [
                 'totalHardware'    => $totalHardware,
                 'totalContractors' => $totalContractors,
-                'recentProjects'  => $recentProjects,
-                'topContractors'   => $topContractors,
+                'recentHardware'   => $recentHardware,
                 'categoryStats'    => $categoryStats,
                 'dbError'          => null,
             ];
@@ -70,8 +59,7 @@ class DashboardController
             return [
                 'totalHardware'    => 0,
                 'totalContractors' => 0,
-                'recentProjects'  => [],
-                'topContractors'   => [],
+                'recentHardware'   => [],
                 'categoryStats'    => [],
                 'dbError'          => 'Unable to load dashboard data. Please check the database connection.',
             ];

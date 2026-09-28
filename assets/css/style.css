@@ -1,0 +1,67 @@
+/**
+ * assets/css/style.css
+ * MKR-Source-Hub – MKR Hartamas Royal Blue & Cyan Theme
+ * MKR Hartamas Sdn. Bhd.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --mkr-blue-dark: #0f172a;
+    --mkr-blue-royal: #1d4ed8;
+    --mkr-blue-primary: #2563eb;
+    --mkr-blue-light: #3b82f6;
+    --mkr-cyan: #38bdf8;
+    --mkr-cyan-dark: #0284c7;
+}
+
+body {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    background-color: #0b1329;
+    color: #f8fafc;
+}
+
+.font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Custom Scrollbar in Dark Slate Blue */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0b1329;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}
+
+/* Active Nav Link Styles - Royal Blue & Sky Cyan */
+.nav-link-active {
+    position: relative;
+    color: #38bdf8 !important;
+    background-color: rgba(37, 99, 235, 0.15) !important;
+}
+
+.nav-link-active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2.5px;
+    background: linear-gradient(90deg, #2563eb, #38bdf8);
+}
+
+/* Wireframe dashed border for form components */
+.wireframe-box {
+    border: 2px dashed rgba(56, 189, 248, 0.35);
+}

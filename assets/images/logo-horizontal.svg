@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" width="100%" height="100%">
+  <defs>
+    <linearGradient id="cyanGradH" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="blueGradH" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Icon Symbol -->
+  <g transform="translate(5, 5) scale(0.28)">
+    <rect x="25" y="10" width="26" height="26" rx="7" fill="url(#cyanGradH)" />
+    <rect x="75" y="10" width="26" height="26" rx="7" fill="url(#cyanGradH)" />
+    <path d="M38 25 C 38 45, 50 50, 63 50 C 75 50, 88 45, 88 25 L 88 40 C 88 55, 75 65, 63 65 C 50 65, 38 55, 38 40 Z" fill="url(#cyanGradH)" />
+    <rect x="50" y="35" width="26" height="30" rx="6" fill="url(#cyanGradH)" />
+
+    <rect x="23" y="60" width="26" height="55" rx="6" fill="url(#blueGradH)" />
+    <rect x="50" y="75" width="26" height="40" rx="6" fill="url(#blueGradH)" />
+    <rect x="77" y="60" width="26" height="55" rx="6" fill="url(#blueGradH)" />
+  </g>
+
+  <!-- Text "mkr." -->
+  <text x="48" y="36" font-family="'Inter', 'Arial Black', sans-serif" font-weight="900" font-size="28" fill="#ffffff">mkr</text>
+  <rect x="94" y="28" width="7" height="7" rx="2" fill="#38bdf8" />
+
+  <!-- Text "hartamas" -->
+  <text x="49" y="50" font-family="'Inter', sans-serif" font-weight="600" font-size="11" fill="#93c5fd" letter-spacing="3">hartamas</text>
+  
+  <!-- Divider line -->
+  <line x1="145" y1="12" x2="145" y2="48" stroke="#334155" stroke-width="1.5" />
+  
+  <!-- Sub-title -->
+  <text x="156" y="28" font-family="'Inter', sans-serif" font-weight="700" font-size="11" fill="#38bdf8" letter-spacing="1">SOURCE-HUB</text>
+  <text x="156" y="44" font-family="'Inter', sans-serif" font-weight="500" font-size="8" fill="#94a3b8" letter-spacing="1.5">PROCUREMENT</text>
+</svg>
